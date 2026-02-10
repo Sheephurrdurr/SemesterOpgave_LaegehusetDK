@@ -1,4 +1,10 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="Domain/Domain.csproj" />
+    <Project Path="Facade/Facade.csproj" Id="4e403b09-a699-4466-8eef-8be33c9b5841" />
+    <Project Path="Infrastructure/Infrastructure.csproj" />
+    <Project Path="UseCases/UseCases.csproj" Id="ad5a8c04-4bec-4f8e-b7df-4cb61540b7a3" />
+  </Folder>
+  <Folder Name="/tests/" />
   <Project Path="ConsoleUI/ConsoleUI.csproj" />
-  <Project Path="Domain/Domain.csproj" />
 </Solution>
