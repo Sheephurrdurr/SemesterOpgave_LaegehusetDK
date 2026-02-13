@@ -8,4 +8,4 @@ var startTime = DateTime.Now.AddDays(1);
 var consultation = new Consultation(consultationType, doctor, patient, startTime);
 
 var newConsultationType = new RegularConsultation();
-consultation.ChangeConsultationType(newConsultationType);
+consultation.ChangeConsultationType(newConsultationType, DateTime.Now.AddDays(1));

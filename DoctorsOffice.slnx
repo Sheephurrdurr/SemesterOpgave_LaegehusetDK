@@ -5,6 +5,8 @@
     <Project Path="Infrastructure/Infrastructure.csproj" />
     <Project Path="UseCases/UseCases.csproj" Id="ad5a8c04-4bec-4f8e-b7df-4cb61540b7a3" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="ConsultationTests/DoctorsOfficeTests.csproj" Id="66e6265d-8ca9-4d8d-be84-256bc552b1a2" />
+  </Folder>
   <Project Path="ConsoleUI/ConsoleUI.csproj" />
 </Solution>
