@@ -10,7 +10,8 @@ namespace Domain.Entities
         public Patient Patient { get; init; } // init allows setting the Patient only during object initialization, ensuring immutability after creation.
         public DateTime StartTime { get; private set; }
         public TimeSpan Duration { get; private set; }
-        public DateTime EndTime => StartTime.Add(Duration);
+        public DateTime EndTime { get; private set; }
+        
         public Consultation(
                             ConsultationType consultationType,
                             Doctor doctor,
@@ -18,7 +19,7 @@ namespace Domain.Entities
                             DateTime startTime)
         {
             // Pre-condition checks
-            Validate(startTime);
+            ValidateStartTime(startTime);
 
             // Assignments
             ConsultationType = consultationType;
@@ -26,16 +27,27 @@ namespace Domain.Entities
             Patient = patient;
             StartTime = startTime;
             Duration = consultationType.Duration;
-
+            EndTime = startTime.Add(Duration);
         }
 
-        public void ChangeConsultationType(ConsultationType newType)
+        public void ChangeConsultationType(ConsultationType newType, DateTime startTime)
         {
             ConsultationType = newType;
             Duration = newType.Duration;
+            EndTime = startTime.Add(Duration);
         }
 
-        private void Validate(DateTime startTime)
+        public void ChangeStartTime(DateTime newStartTime)
+        {
+            if (StartTime < DateTime.Now)
+            {
+                throw new ArgumentException("Start time cannot be in the past.");
+            }
+            ValidateStartTime(newStartTime);
+            StartTime = newStartTime;
+        }
+
+        private void ValidateStartTime(DateTime startTime)
         {
             if (startTime < DateTime.Now)
             {
