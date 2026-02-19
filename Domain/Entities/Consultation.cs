@@ -27,14 +27,13 @@ namespace Domain.Entities
             Patient = patient;
             StartTime = startTime;
             Duration = consultationType.Duration;
-            EndTime = startTime.Add(Duration);
+            EndTime = startTime + consultationType.Duration;
         }
 
         public void ChangeConsultationType(ConsultationType newType, DateTime startTime)
         {
             ConsultationType = newType;
             Duration = newType.Duration;
-            EndTime = startTime.Add(Duration);
         }
 
         public void ChangeStartTime(DateTime newStartTime)
