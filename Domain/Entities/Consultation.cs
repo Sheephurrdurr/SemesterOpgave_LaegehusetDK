@@ -1,17 +1,21 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 
 namespace Domain.Entities
 {
     // Coding association between Doctor and Patient, as a Doctor can have multiple Patients and a Patient can have multiple Doctors.
     public class Consultation
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; private set; }
+        public Guid ConsultationTypeId { get; private set; }
+        public Guid DoctorId { get; private set; }
+        public Guid PatientId { get; private set; }
         public ConsultationType ConsultationType { get; private set; }
         public Doctor Doctor { get; private set; }
-        public Patient Patient { get; init; } // init allows setting the Patient only during object initialization, ensuring immutability after creation.
+        public Patient Patient { get; private set; } // init allows setting the Patient only during object initialization, ensuring immutability after creation.
         public DateTime StartTime { get; private set; }
         public TimeSpan Duration { get; private set; }
-        public DateTime EndTime { get; private set; }
+        public DateTime EndTime => StartTime + Duration;
         
         public Consultation(
                             ConsultationType consultationType,
@@ -23,13 +27,18 @@ namespace Domain.Entities
             ValidateStartTime(startTime);
 
             // Assignments
+            Id = Guid.NewGuid();
             ConsultationType = consultationType;
+            ConsultationTypeId = consultationType.Id;
             Doctor = doctor;
+            DoctorId = doctor.Id;
             Patient = patient;
+            PatientId = patient.Id;
             StartTime = startTime;
             Duration = consultationType.Duration;
-            EndTime = startTime + consultationType.Duration;
         }
+
+        protected Consultation() { }
 
         public void ChangeConsultationType(ConsultationType newType, DateTime startTime)
         {

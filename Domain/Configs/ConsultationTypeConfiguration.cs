@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Domain.Configs
 {
-    public class ConsultationTypeConfiguration
+    public class ConsultationTypeConfiguration : IEntityTypeConfiguration<ConsultationType>
     {
         public void Configure(EntityTypeBuilder<ConsultationType> builder)
         {
@@ -17,6 +17,9 @@ namespace Domain.Configs
 
             builder.Property(x => x.Id)
                 .ValueGeneratedNever(); // Domain driven Id generation. That skank, EF, doesn't get to do it.
+
+            builder.Property(x => x.Name)
+                .IsRequired();
 
             builder.Property(x => x.Duration)
                 .IsRequired();
