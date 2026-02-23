@@ -51,6 +51,18 @@ namespace Domain
             modelBuilder.Entity<CounselingSession>().HasData(
                new CounselingSession(new Guid("185A3999-762C-4D98-A601-5492B16D3E04"))
             );
+
+            modelBuilder.Entity<Doctor>().HasData(
+                new Doctor(new Guid("23A85B5A-B1BA-4C8B-9058-912D37D76AB7"), "Hans Gylling"),
+                new Doctor(new Guid("881F9667-D4F1-4D49-AEDD-67AD6DA01C71"), "Grete Gylling"),
+                new Doctor(new Guid("FD0DDFDA-79B0-4D4F-9F46-720A5223586C"), "Mads Hyttemads")
+            );
+
+            modelBuilder.Entity<Patient>().HasData(
+                new Patient(new Guid("A3B0F1C3-6455-4C7D-8041-77DF9A5A1F79"), "Mette Mette", "0202020072"),
+                new Patient(new Guid("D1A6A056-3302-4ADB-8D32-57AD2D922DDC"), "Torben Hansen", "0101003022"),
+                new Patient(new Guid("A0D535B1-1488-42FB-93CF-769C557EF393"), "Thue Madsen", "1100390020")
+            );
         }
     }
 }

@@ -19,8 +19,8 @@ Console.WriteLine(); // Some room in da console
 Console.WriteLine();
 
 // CREATE & READ 
-var doctor = new Doctor("Anders Hansen");
-var patient = new Patient("Henriette Gylling");
+var doctor = new Doctor(new Guid("7ED46398-CEE1-45F6-A27A-C9C01EED9A7F"), "Anders Hansen");
+var patient = new Patient(new Guid("0A548031-F363-4035-A957-08FA4A052BFE"), "Henriette Gylling", "1202880275");
 
 context.Doctors.Add(doctor);
 context.Patients.Add(patient);
@@ -82,4 +82,20 @@ Console.WriteLine("Consultation has been deleted. Changes saved.");
 
 var consultationsAfter = context.Consultations.ToList();
 Console.WriteLine($"Found: {consultationsAfter.Count} consultations in database.");
+
+// Read seeded patients and doctors
+var seededPatients = context.Patients.ToList();
+var seededDoctors = context.Doctors.ToList();
+
+foreach(var seededPatient in seededPatients)
+{
+    Console.WriteLine(seededPatient.Name);
+}
+
+foreach(var seededDoctor in seededDoctors)
+{
+    Console.WriteLine(seededDoctor.Name);
+}
+
+
 

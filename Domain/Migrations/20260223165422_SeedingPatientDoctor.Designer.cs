@@ -3,6 +3,7 @@ using System;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(DoctorsOfficeContext))]
-    partial class DoctorsOfficeContextModelSnapshot : ModelSnapshot
+    [Migration("20260223165422_SeedingPatientDoctor")]
+    partial class SeedingPatientDoctor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -91,17 +94,17 @@ namespace Domain.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("23a85b5a-b1ba-4c8b-9058-912d37d76ab7"),
+                            Id = new Guid("7b00057b-a70d-4ee9-a964-e080c48d06c2"),
                             Name = "Hans Gylling"
                         },
                         new
                         {
-                            Id = new Guid("881f9667-d4f1-4d49-aedd-67ad6da01c71"),
+                            Id = new Guid("c2eb3589-0cd0-4800-b0b3-f22e7ec69762"),
                             Name = "Grete Gylling"
                         },
                         new
                         {
-                            Id = new Guid("fd0ddfda-79b0-4d4f-9f46-720a5223586c"),
+                            Id = new Guid("5a06284c-7c2a-48ec-97ef-0900402aed7c"),
                             Name = "Mads Hyttemads"
                         });
                 });
@@ -128,19 +131,19 @@ namespace Domain.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a3b0f1c3-6455-4c7d-8041-77df9a5a1f79"),
+                            Id = new Guid("e0e56a31-8b2f-4f00-b640-eaa0b52f1f60"),
                             Cpr = "0202020072",
                             Name = "Mette Mette"
                         },
                         new
                         {
-                            Id = new Guid("d1a6a056-3302-4adb-8d32-57ad2d922ddc"),
+                            Id = new Guid("c9911795-4faa-4ed3-9199-06bf4961996a"),
                             Cpr = "0101003022",
                             Name = "Torben Hansen"
                         },
                         new
                         {
-                            Id = new Guid("a0d535b1-1488-42fb-93cf-769c557ef393"),
+                            Id = new Guid("f135eeba-dbe6-46a5-9a78-fdf97b4c2ed5"),
                             Cpr = "1100390020",
                             Name = "Thue Madsen"
                         });

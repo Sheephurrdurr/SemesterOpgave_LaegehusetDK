@@ -3,6 +3,7 @@ using System;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(DoctorsOfficeContext))]
-    partial class DoctorsOfficeContextModelSnapshot : ModelSnapshot
+    [Migration("20260223164003_DbUpdatePatient")]
+    partial class DbUpdatePatient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -87,23 +90,6 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctors", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("23a85b5a-b1ba-4c8b-9058-912d37d76ab7"),
-                            Name = "Hans Gylling"
-                        },
-                        new
-                        {
-                            Id = new Guid("881f9667-d4f1-4d49-aedd-67ad6da01c71"),
-                            Name = "Grete Gylling"
-                        },
-                        new
-                        {
-                            Id = new Guid("fd0ddfda-79b0-4d4f-9f46-720a5223586c"),
-                            Name = "Mads Hyttemads"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
@@ -111,10 +97,9 @@ namespace Domain.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Cpr")
-                        .IsRequired()
+                    b.Property<int>("Cpr")
                         .HasMaxLength(10)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -124,26 +109,6 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Patients", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a3b0f1c3-6455-4c7d-8041-77df9a5a1f79"),
-                            Cpr = "0202020072",
-                            Name = "Mette Mette"
-                        },
-                        new
-                        {
-                            Id = new Guid("d1a6a056-3302-4adb-8d32-57ad2d922ddc"),
-                            Cpr = "0101003022",
-                            Name = "Torben Hansen"
-                        },
-                        new
-                        {
-                            Id = new Guid("a0d535b1-1488-42fb-93cf-769c557ef393"),
-                            Cpr = "1100390020",
-                            Name = "Thue Madsen"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.CounselingSession", b =>

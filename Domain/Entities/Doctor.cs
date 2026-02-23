@@ -5,15 +5,17 @@
         public Guid Id { get; private set; }
         public string Name { get; private set; }
         public ICollection<Consultation> Consultations { get; private set; } = new List<Consultation>();
-        public Doctor(string name)
+        public Doctor(Guid id, string name)
         {
-            if (string.IsNullOrEmpty(name)) 
+            if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentNullException("Patient must have a name.");
+            }
 
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
         }
 
-        protected Doctor() { }
+        protected Doctor() { } // EF Core uses this constructor to create the object via reflection. It cant use the standard constructor, cuz it doesnt have the arguments yet. 
     }
 }
