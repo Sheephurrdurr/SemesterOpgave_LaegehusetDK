@@ -2,6 +2,7 @@
 {
     public class ConsultationType
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public TimeSpan Duration { get; protected set; }
     }
 
