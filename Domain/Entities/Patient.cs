@@ -6,7 +6,16 @@
         public string Name { get; private set; }
         public string Cpr { get; private set; }
         public ICollection<Consultation> Consultations { get; private set; } = new List<Consultation>();
+        public Patient(string name, string cpr)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("Doctor must have a name.");
 
+            Id = Guid.NewGuid();
+            Name = name;
+            ValidateCpr(cpr);
+            Cpr = cpr;
+        }
         public Patient(Guid id, string name, string cpr)
         {
             if (string.IsNullOrEmpty(name)) 
