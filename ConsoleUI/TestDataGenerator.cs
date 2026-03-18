@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleUI
 {
@@ -67,7 +64,6 @@ namespace ConsoleUI
                     patients[_random.Next(patients.Count)],
                     DateTime.Now.AddDays(_random.Next(1,30))
                 );
-
                 consultations.Add( consultation1 );
             }
             _context.AddRange(consultations);

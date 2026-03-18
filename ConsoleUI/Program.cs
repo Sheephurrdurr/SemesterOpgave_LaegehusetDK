@@ -96,6 +96,3 @@ foreach(var seededDoctor in seededDoctors)
 {
     Console.WriteLine(seededDoctor.Name);
 }
-
-
-
