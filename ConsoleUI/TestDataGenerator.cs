@@ -19,7 +19,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < count; i++)
             {
-                doctors.Add(new Doctor(NameGenerator()));
+                doctors.Add(new Doctor($"Doctor{i}"));
 
                 if (i % 100 == 0)
                 {
@@ -36,7 +36,7 @@ namespace ConsoleUI
 
             for (int i = 0; i < count; i++)
             {
-                patiens.Add(new Patient(NameGenerator(), CprGenerator()));
+                patiens.Add(new Patient($"Patient{i}", CprGenerator()));
 
                 if (i % 100 == 0)
                 {
@@ -64,18 +64,16 @@ namespace ConsoleUI
                     patients[_random.Next(patients.Count)],
                     DateTime.Now.AddDays(_random.Next(1,30))
                 );
+
+                if (i % 100 == 0)
+                {
+                    Console.WriteLine($"Generated {i}/{count} consultations...");
+                }
+
                 consultations.Add( consultation1 );
             }
             _context.AddRange(consultations);
-        }
-
-        public string NameGenerator() // It's just a number generator that converts them to string. 
-        {
-            int rng = _random.Next(999);
-
-            string name = rng.ToString();
-
-            return name;
+            _context.SaveChanges();
         }
 
         public string CprGenerator()
