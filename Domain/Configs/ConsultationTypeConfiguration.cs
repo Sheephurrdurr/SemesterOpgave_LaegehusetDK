@@ -18,6 +18,9 @@ namespace Domain.Configs
             builder.Property(x => x.Id)
                 .ValueGeneratedNever(); // Domain driven Id generation. That skank, EF, doesn't get to do it.
 
+            builder.Property(x => x.Name)
+                .IsRequired();
+
             builder.Property(x => x.Duration)
                 .IsRequired();
 

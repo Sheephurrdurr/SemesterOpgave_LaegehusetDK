@@ -1,4 +1,5 @@
 ﻿using Domain.Configs;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Domain
 
         public DoctorsOfficeContext() { }
         public DbSet<Entities.Doctor> Doctors { get; set; }
-        public DbSet<Entities.Patient> Patients { get; set;  }
+        public DbSet<Entities.Patient> Patients { get; set; }
         public DbSet<Entities.ConsultationType> ConsultationTypes { get; set; }
         public DbSet<Entities.Consultation> Consultations { get; set; }
 
@@ -33,6 +34,34 @@ namespace Domain
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new ConsultationTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ConsultationConfiguration());
+
+            modelBuilder.Entity<RegularConsultation>().HasData(
+                 new RegularConsultation(new Guid("4ADF9313-E990-4BFC-B186-A886179DA195"))
+            );
+
+            modelBuilder.Entity<Vaccination>().HasData(
+               new Vaccination(new Guid("9E6F6390-2A8D-4144-9F3A-01ECA22F5FEA"))
+            );
+
+            modelBuilder.Entity<PerscriptionRenewal>().HasData(
+            new PerscriptionRenewal(new Guid("CE3E1283-08AF-4CC4-8B2F-E29B63A7DE12"))
+            );
+
+            modelBuilder.Entity<CounselingSession>().HasData(
+               new CounselingSession(new Guid("185A3999-762C-4D98-A601-5492B16D3E04"))
+            );
+
+            modelBuilder.Entity<Doctor>().HasData(
+                new Doctor(new Guid("23A85B5A-B1BA-4C8B-9058-912D37D76AB7"), "Hans Gylling"),
+                new Doctor(new Guid("881F9667-D4F1-4D49-AEDD-67AD6DA01C71"), "Grete Gylling"),
+                new Doctor(new Guid("FD0DDFDA-79B0-4D4F-9F46-720A5223586C"), "Mads Hyttemads")
+            );
+
+            modelBuilder.Entity<Patient>().HasData(
+                new Patient(new Guid("A3B0F1C3-6455-4C7D-8041-77DF9A5A1F79"), "Mette Mette", "0202020072"),
+                new Patient(new Guid("D1A6A056-3302-4ADB-8D32-57AD2D922DDC"), "Torben Hansen", "0101003022"),
+                new Patient(new Guid("A0D535B1-1488-42FB-93CF-769C557EF393"), "Thue Madsen", "1100390020")
+            );
         }
     }
 }
