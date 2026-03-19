@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Domain
 {
     public class DoctorsOfficeContext : DbContext
@@ -11,7 +12,6 @@ namespace Domain
         }
 
         public DoctorsOfficeContext() { }
-
         public DbSet<Entities.Doctor> Doctors { get; set; }
         public DbSet<Entities.Patient> Patients { get; set; }
         public DbSet<Entities.ConsultationType> ConsultationTypes { get; set; }
