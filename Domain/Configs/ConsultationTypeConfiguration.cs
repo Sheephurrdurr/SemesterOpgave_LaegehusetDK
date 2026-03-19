@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Domain.Configs
 {
-    public class ConsultationTypeConfiguration
+    public class ConsultationTypeConfiguration : IEntityTypeConfiguration<ConsultationType>
     {
         public void Configure(EntityTypeBuilder<ConsultationType> builder)
         {
