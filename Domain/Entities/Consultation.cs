@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Headers;
-
+﻿
 namespace Domain.Entities
 {
     // Coding association between Doctor and Patient, as a Doctor can have multiple Patients and a Patient can have multiple Doctors.
