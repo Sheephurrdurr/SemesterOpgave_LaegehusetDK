@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Entities;
+using Infrastructure;
 
 namespace ConsoleUI
 {

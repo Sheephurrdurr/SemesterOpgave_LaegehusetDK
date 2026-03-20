@@ -1,12 +1,7 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 
-namespace Domain.Configs
+namespace Infrastructure.Configs
 {
     public static class DbContextConfig
     {
@@ -19,6 +14,11 @@ namespace Domain.Configs
         public static void ConfigureInMemory(this DbContextOptionsBuilder options, SqliteConnection connection)
         {
             options.UseSqlite(connection);
+        }
+
+        public static void ConfigureSqlServer(this DbContextOptionsBuilder options, string connectionString)
+        {
+            options.UseSqlServer(connectionString);
         }
     }
 }

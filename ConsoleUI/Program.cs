@@ -1,8 +1,29 @@
-﻿using Domain.Entities;
-using Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Infrastructure;
+using Microsoft.Extensions.Configuration;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+var options = new DbContextOptionsBuilder<DoctorsOfficeContext>()
+    .UseSqlServer(connectionString)
+    .Options;
+
+using var context = new DoctorsOfficeContext(options);
+context.Database.EnsureDeleted();
+context.Database.EnsureCreated();
+
+Console.WriteLine("Database created succesfully!");
 
 
+
+
+/*
+ * TEST CODE, NO LONGER RELEVANT
 using var context = new DoctorsOfficeContext();
 context.Database.EnsureDeleted();
 context.Database.EnsureCreated();
@@ -29,7 +50,7 @@ context.SaveChanges();
 var doctors = context.Doctors.ToList();
 var patients = context.Patients.ToList();
 
-foreach(var horse in doctors) // What? You want me to use "doc"? No way, man. 
+foreach(var horse in doctors) // What? You want me to use "doctor"? No way, man. 
 {
     Console.WriteLine($"Doctor's Name: {horse.Name},");
 }
@@ -96,3 +117,4 @@ foreach(var seededDoctor in seededDoctors)
 {
     Console.WriteLine(seededDoctor.Name);
 }
+*/

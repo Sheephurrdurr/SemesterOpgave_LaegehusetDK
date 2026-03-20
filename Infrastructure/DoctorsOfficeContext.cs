@@ -1,9 +1,9 @@
-﻿using Domain.Configs;
+﻿using Infrastructure.Configs;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Domain
+namespace Infrastructure
 {
     public class DoctorsOfficeContext : DbContext
     {
@@ -12,18 +12,10 @@ namespace Domain
         }
 
         public DoctorsOfficeContext() { }
-        public DbSet<Entities.Doctor> Doctors { get; set; }
-        public DbSet<Entities.Patient> Patients { get; set; }
-        public DbSet<Entities.ConsultationType> ConsultationTypes { get; set; }
-        public DbSet<Entities.Consultation> Consultations { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.ConfigureSqLite();
-            }
-        }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<ConsultationType> ConsultationTypes { get; set; }
+        public DbSet<Consultation> Consultations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
 
-namespace Domain.Configs
+namespace Infrastructure.Configs
 {
-    public class DoctorConfiguration : IEntityTypeConfiguration<Entities.Doctor>
+    public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
