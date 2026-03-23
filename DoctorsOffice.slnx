@@ -5,7 +5,9 @@
     <Project Path="UseCases/UseCases.csproj" Id="ad5a8c04-4bec-4f8e-b7df-4cb61540b7a3" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="DoctorsOfficeTests/DoctorsOfficeTests.csproj" />
+    <Project Path="DoctorsOfficeTests/DoctorsOfficeTests.csproj">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
   </Folder>
   <Project Path="ConsoleUI/ConsoleUI.csproj" />
 </Solution>
