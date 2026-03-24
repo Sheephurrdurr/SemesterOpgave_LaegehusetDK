@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using UseCases.Interfaces;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -9,19 +12,25 @@ var configuration = new ConfigurationBuilder()
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-var options = new DbContextOptionsBuilder<DoctorsOfficeContext>()
-    .UseSqlServer(connectionString)
-    .Options;
+var services = new ServiceCollection();
 
-using var context = new DoctorsOfficeContext(options);
+// Register DBContext 
+services.AddDbContext<DoctorsOfficeContext>(options => 
+    options.UseSqlServer(connectionString));
+
+// Register repositories
+services.AddScoped<IConsultationRepository, ConsultationRepository>();
+services.AddScoped<IPatientRepository, PatientRepository>();
+services.AddScoped<IDoctorRepository, DoctorRepository>();
+services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
+
+var serviceProvider = services.BuildServiceProvider();
+
+var context = serviceProvider.GetRequiredService<DoctorsOfficeContext>();
 context.Database.EnsureDeleted();
 context.Database.EnsureCreated();
 
 Console.WriteLine("Database created succesfully!");
-
-
-
-
 /*
  * TEST CODE, NO LONGER RELEVANT
 using var context = new DoctorsOfficeContext();

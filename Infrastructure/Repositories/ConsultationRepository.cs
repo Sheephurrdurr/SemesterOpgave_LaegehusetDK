@@ -13,20 +13,23 @@ namespace Infrastructure.Repositories
         }
         public async Task<Consultation?> GetByIdAsync(Guid id)
         {
-            var consultation = _context.Consultations
-                .AsNoTracking()
+            return await _context.Consultations
                 .Where(c => c.Id == id)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Consultation>> GetByPatientIdAsync(Guid patientId)
         {
-
+            return await _context.Consultations
+                .Where(c => c.PatientId == patientId)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Consultation>> GetByDoctorIdAsync(Guid doctorId)
         {
-
+            return await _context.Consultations
+                .Where(c => c.DoctorId == doctorId)
+                .ToListAsync();
         }
 
         public async Task AddAsync(Consultation consultation)
