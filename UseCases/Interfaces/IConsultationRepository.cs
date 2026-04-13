@@ -13,6 +13,5 @@ namespace UseCases.Interfaces
 
         public Task AddAsync(Consultation consultation);
 
-        public Task SaveAsync();
     }
 }

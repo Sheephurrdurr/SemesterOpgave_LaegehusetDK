@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ConsoleUI;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases.Interfaces;
@@ -24,9 +25,17 @@ services.AddScoped<IPatientRepository, PatientRepository>();
 services.AddScoped<IDoctorRepository, DoctorRepository>();
 services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
 
+services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 var serviceProvider = services.BuildServiceProvider();
 
 var context = serviceProvider.GetRequiredService<DoctorsOfficeContext>();
+
+var seeder = new TestDataGenerator(context);
+seeder.GenerateDoctors(100);
+seeder.GeneratePatients(100);
+seeder.GenerateConsultations(200);
+
 context.Database.EnsureDeleted();
 context.Database.EnsureCreated();
 

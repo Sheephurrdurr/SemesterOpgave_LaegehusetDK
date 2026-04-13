@@ -25,6 +25,8 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new ConsultationTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ConsultationConfiguration());
 
+            /*
+             * Old test data, only here cuz I cant let go
             modelBuilder.Entity<RegularConsultation>().HasData(
                  new RegularConsultation(new Guid("4ADF9313-E990-4BFC-B186-A886179DA195"))
             );
@@ -52,6 +54,7 @@ namespace Infrastructure
                 new Patient(new Guid("D1A6A056-3302-4ADB-8D32-57AD2D922DDC"), "Torben Hansen", "0101003022"),
                 new Patient(new Guid("A0D535B1-1488-42FB-93CF-769C557EF393"), "Thue Madsen", "1100390020")
             );
+            */
         }
     }
 }
