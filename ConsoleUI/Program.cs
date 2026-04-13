@@ -4,7 +4,9 @@ using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases.Interfaces;
+using Domain.Entities;
 
+// Configure appconfig connectionstring
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
@@ -12,6 +14,7 @@ var configuration = new ConfigurationBuilder()
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+// IoC
 var services = new ServiceCollection();
 
 // Register DBContext 
@@ -31,6 +34,20 @@ context.Database.EnsureDeleted();
 context.Database.EnsureCreated();
 
 Console.WriteLine("Database created succesfully!");
+
+Console.WriteLine("Seeding database...");
+
+// Get repositories via dependency injection
+var doctorRepo = serviceProvider.GetRequiredService<IDoctorRepository>();
+var patientRepo = serviceProvider.GetRequiredService<IPatientRepository>();
+
+// Seed doctor and patient
+await doctorRepo.AddAsync(new Doctor(Guid.NewGuid(), "Hans Hansen"));
+await patientRepo.AddAsync(new Patient(Guid.NewGuid(), "Lars Gylling", "1234567890"));
+
+await doctorRepo.SaveAsync();
+await patientRepo.SaveAsync();
+Console.WriteLine("Database has been seeded.");
 /*
  * TEST CODE, NO LONGER RELEVANT
 using var context = new DoctorsOfficeContext();
