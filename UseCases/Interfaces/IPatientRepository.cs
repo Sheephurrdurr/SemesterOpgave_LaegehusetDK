@@ -10,7 +10,5 @@ namespace UseCases.Interfaces
         public Task<Patient?> GetByIdAsync(Guid id);
 
         public Task AddAsync(Patient patient);
-
-        public Task SaveAsync();
     }
 }

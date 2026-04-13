@@ -7,7 +7,5 @@ namespace UseCases.Interfaces
         public Task<Doctor?> GetByIdAsync(Guid id);
 
         public Task AddAsync(Doctor doctor);
-
-        public Task SaveAsync();
     }
 }
