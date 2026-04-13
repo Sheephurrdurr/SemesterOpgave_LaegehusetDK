@@ -3,7 +3,8 @@ namespace Domain.Enums
 {
     public enum Status
     {
-        Canceled,
+        Arrived,
+        Cancelled,
         Completed,
         Planned
     }

@@ -11,7 +11,8 @@ namespace Domain.Entities
         public Guid PatientId { get; private set; }
         public Status Status { get; private set; }
         public TimeSlot TimeSlot {  get; private set; }
-        
+        public string? Note { get; private set; }
+
         public Consultation(
                             ConsultationType consultationType,
                             Doctor doctor,
@@ -39,5 +40,39 @@ namespace Domain.Entities
             TimeSlot = newTimeSlot;
         }
 
+        public void Cancel() // Typical command, which does ... something. As opposed to a query, which just returns data.
+                             // CQS says that commands should not return data, but in this case we throw exceptions if the command is invalid. 
+        {
+            if (Status == Status.Cancelled)
+                throw new InvalidOperationException("Consultation is already cancelled.");
+
+            if (Status == Status.Completed)
+                throw new InvalidOperationException("Cannot cancel a completed consultation.");
+            
+            Status = Status.Cancelled;
+        }
+
+        public void MarkArrived()
+        {
+            if (Status == Status.Cancelled)
+                throw new InvalidOperationException("Cannot mark a cancelled consultation as arrived.");
+
+            Status = Status.Arrived;
+        }
+
+        public void Complete(string note)
+        {
+            if (Status == Status.Completed) 
+                throw new InvalidOperationException("Consultation is already completed.");
+
+            if (Status == Status.Cancelled)
+                throw new InvalidOperationException("Cannot complete a cancelled consultation.");
+
+            if (Status != Status.Arrived)
+                throw new InvalidOperationException("Consultation must be marked as arrived before it can be completed.");
+
+            Note = note;
+            Status = Status.Completed;
+        }
     }
 }
