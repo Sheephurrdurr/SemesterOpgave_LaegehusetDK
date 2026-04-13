@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases.Interfaces;
-using Domain.Entities;
+using UseCases.BookConsultation;
 
-// Configure appconfig connectionstring
+// Configure appconfig connectionstring, so that we can use it to connect to the database.
+// This is done by reading the appsettings.json file, which is located in the root of the project.
+// The connection string is then retrieved from the configuration and used to configure the DbContext.
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
@@ -15,7 +17,9 @@ var configuration = new ConfigurationBuilder()
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-// IoC
+// IoC enables us to inject dependencies into our classes, rather than having them create their own dependencies.
+// This makes our code more testable and maintainable, as we can easily swap out implementations of our dependencies without having to change the code that uses them.
+// In this case, we are using the built-in dependency injection container provided by Microsoft.Extensions.DependencyInjection to register our DbContext, repositories, use cases, and UnitOfWork.
 var services = new ServiceCollection();
 
 // Register DBContext 
@@ -28,128 +32,46 @@ services.AddScoped<IPatientRepository, PatientRepository>();
 services.AddScoped<IDoctorRepository, DoctorRepository>();
 services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
 
+// Register use cases
+services.AddScoped<BookConsultationUseCase>();
+
+// Register UnitOfWork, which is responsible for saving changes to the database.
+// This is used in the use cases to ensure that all changes are saved in a single transaction.
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var serviceProvider = services.BuildServiceProvider();
 
 var context = serviceProvider.GetRequiredService<DoctorsOfficeContext>();
 
-var seeder = new TestDataGenerator(context);
-seeder.GenerateDoctors(100);
-seeder.GeneratePatients(100);
-seeder.GenerateConsultations(200);
-
+Console.WriteLine("Creating database...");
 context.Database.EnsureDeleted();
 context.Database.EnsureCreated();
-
 Console.WriteLine("Database created succesfully!");
 
 Console.WriteLine("Seeding database...");
+var seeder = new TestDataGenerator(context);
+seeder.GenerateConsultationTypes();
+seeder.GenerateDoctors(100);
+seeder.GeneratePatients(100);
+seeder.GenerateConsultations(200);
+Console.WriteLine("Test data generation completed!");
 
-// Get repositories via dependency injection
-var doctorRepo = serviceProvider.GetRequiredService<IDoctorRepository>();
-var patientRepo = serviceProvider.GetRequiredService<IPatientRepository>();
-
-// Seed doctor and patient
-await doctorRepo.AddAsync(new Doctor(Guid.NewGuid(), "Hans Hansen"));
-await patientRepo.AddAsync(new Patient(Guid.NewGuid(), "Lars Gylling", "1234567890"));
-
-await doctorRepo.SaveAsync();
-await patientRepo.SaveAsync();
 Console.WriteLine("Database has been seeded.");
-/*
- * TEST CODE, NO LONGER RELEVANT
-using var context = new DoctorsOfficeContext();
-context.Database.EnsureDeleted();
-context.Database.EnsureCreated();
 
-// Get consultationTypes from db test
-var consultationTypes = context.ConsultationTypes.ToList();
-Console.WriteLine("=== Consultationtypes in database ===");
-foreach (var type in consultationTypes)
+// Test use case by booking a consultation with the first doctor, patient and consultation type in the database.
+var bookingUseCase = serviceProvider.GetRequiredService<BookConsultationUseCase>();
+
+var doctor = context.Doctors.First();
+var patient = context.Patients.First();
+var consultationType = context.ConsultationTypes.First();
+
+var request = new BookConsultationRequest
 {
-    Console.WriteLine($"{type.Name} - Duration: {type.Duration.TotalMinutes} min.");
-}
+    DoctorId = doctor.Id,
+    PatientId = patient.Id,
+    ConsultationTypeId = consultationType.Id,
+    StartTime = DateTime.Now.AddDays(1)
+};
 
-Console.WriteLine(); // Some room in da console
-Console.WriteLine();
-
-// CREATE & READ 
-var doctor = new Doctor(new Guid("7ED46398-CEE1-45F6-A27A-C9C01EED9A7F"), "Anders Hansen");
-var patient = new Patient(new Guid("0A548031-F363-4035-A957-08FA4A052BFE"), "Henriette Gylling", "1202880275");
-
-context.Doctors.Add(doctor);
-context.Patients.Add(patient);
-context.SaveChanges();
-
-var doctors = context.Doctors.ToList();
-var patients = context.Patients.ToList();
-
-foreach(var horse in doctors) // What? You want me to use "doctor"? No way, man. 
-{
-    Console.WriteLine($"Doctor's Name: {horse.Name},");
-}
-
-foreach(var cat in patients) // Yes, it's cat. What of it?
-{
-    Console.WriteLine($"Patient Name: {cat.Name},");
-}
-
-Console.WriteLine(); // Some room in da console
-Console.WriteLine();
-
-// CREATE & READ CONSULTATION
-var regular = consultationTypes.OfType<RegularConsultation>().First();
-var consultation1 = new Consultation(regular, doctor, patient, DateTime.Now.AddDays(4));
-context.Consultations.Add(consultation1);
-context.SaveChanges();
-
-// EndTime computed property demonstrated here 
-Console.WriteLine($"{consultation1.StartTime} - {consultation1.EndTime}. Type: {consultation1.ConsultationType.Name} consultation, with {patient.Name}. Doctor {doctor.Name}");
-
-Console.WriteLine(); // Some room in da console
-Console.WriteLine();
-
-// UPDATE 
-var consultation2 = context.Consultations
-    .Include(x => x.ConsultationType)
-    .FirstOrDefault(x => x.DoctorId == doctor.Id);
-
-Console.WriteLine($"Original consultation type: {consultation2.ConsultationType.Name}");
-
-var vaccination = consultationTypes.OfType<Vaccination>().First();
-
-consultation2.ChangeConsultationType(vaccination, DateTime.Now.AddDays(3));
-context.SaveChanges();
-
-Console.WriteLine("ChangeConsultationType() has run.");
-Console.WriteLine($"New consultation type: {consultation2.ConsultationType.Name}");
-
-Console.WriteLine(); // Some room in da console
-Console.WriteLine();
-
-// DELETE
-var consultationsBefore = context.Consultations.ToList();
-Console.WriteLine($"Found {consultationsBefore.Count} consultation in database.");
-
-context.Consultations.Remove(consultation2);
-context.SaveChanges();
-Console.WriteLine("Consultation has been deleted. Changes saved.");
-
-var consultationsAfter = context.Consultations.ToList();
-Console.WriteLine($"Found: {consultationsAfter.Count} consultations in database.");
-
-// Read seeded patients and doctors
-var seededPatients = context.Patients.ToList();
-var seededDoctors = context.Doctors.ToList();
-
-foreach(var seededPatient in seededPatients)
-{
-    Console.WriteLine(seededPatient.Name);
-}
-
-foreach(var seededDoctor in seededDoctors)
-{
-    Console.WriteLine(seededDoctor.Name);
-}
-*/
+var response = await bookingUseCase.ExecuteAsync(request);
+Console.WriteLine(response.Message);

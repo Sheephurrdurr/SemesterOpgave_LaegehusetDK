@@ -48,7 +48,7 @@ namespace UseCases.BookConsultation
 
             // Save the newly created consultation to the database
             await _consultationRepository.AddAsync(consultation);
-            await _consultationRepository.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             // Return result
             return new BookConsultationResponse

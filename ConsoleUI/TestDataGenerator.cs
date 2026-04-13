@@ -14,6 +14,19 @@ namespace ConsoleUI
             _context = context;
         }
 
+        public void GenerateConsultationTypes()
+        {
+            List<ConsultationType> consultationTypes = new List<ConsultationType>();
+
+            consultationTypes.Add(new RegularConsultation(Guid.NewGuid()));
+            consultationTypes.Add(new Vaccination(Guid.NewGuid()));
+            consultationTypes.Add(new PerscriptionRenewal(Guid.NewGuid()));
+            consultationTypes.Add(new CounselingSession(Guid.NewGuid()));
+
+            _context.AddRange(consultationTypes);
+            _context.SaveChanges();
+        }
+
         public void GenerateDoctors(int count)
         {
             List<Doctor> doctors = new List<Doctor>();
@@ -22,7 +35,7 @@ namespace ConsoleUI
             {
                 doctors.Add(new Doctor($"Doctor{i}"));
 
-                if (i % 100 == 0)
+                if (i % (count / 10) == 0)
                 {
                     Console.WriteLine($"Generated {i}/{count} doctors...");
                 }
@@ -39,7 +52,7 @@ namespace ConsoleUI
             {
                 patiens.Add(new Patient($"Patient{i}", CprGenerator()));
 
-                if (i % 100 == 0)
+                if (i % (count / 10) == 0)
                 {
                     Console.WriteLine($"Generated {i}/{count} patients...");
                 }
@@ -66,7 +79,7 @@ namespace ConsoleUI
                     DateTime.Now.AddDays(_random.Next(1,30))
                 );
 
-                if (i % 100 == 0)
+                if (i % (count / 10) == 0)
                 {
                     Console.WriteLine($"Generated {i}/{count} consultations...");
                 }
