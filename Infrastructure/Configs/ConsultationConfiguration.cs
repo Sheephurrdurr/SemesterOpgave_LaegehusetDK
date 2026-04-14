@@ -13,7 +13,16 @@ namespace Infrastructure.Configs
             builder.Property(x => x.Status)
                 .HasConversion<string>();
 
-            builder.ComplexProperty(x => x.TimeSlot, t => t.ToJson());
+            // Configure the TimeSlot as a complex property, because it's a value object.
+            // This way EF will know to map the StartTime and EndTime properties of TimeSlot to columns in the Consultation table.
+            builder.ComplexProperty(x => x.TimeSlot, ts =>
+            {
+                ts.Property(t => t.StartTime).HasColumnName("StartTime");
+                ts.Property(t => t.EndTime).HasColumnName("EndTime");
+            });
+
+            builder.HasIndex("StartTime"); // Indexing the TimeSlot for faster queries when searching for consultations by time.
+                                           // Basically, indexing is just making the database look up the value in a sorted list (the index) instead of scanning through all the records.
         }
     }
 }

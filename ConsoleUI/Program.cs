@@ -1,4 +1,6 @@
-﻿using ConsoleUI;
+﻿
+using Microsoft.EntityFrameworkCore.Proxies;
+using ConsoleUI;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +30,9 @@ var connectionString = configuration.GetConnectionString("DefaultConnection");
 var services = new ServiceCollection();
 
 // Register DBContext 
-services.AddDbContext<DoctorsOfficeContext>(options => 
+services.AddDbContext<DoctorsOfficeContext>(options =>
     options.UseSqlServer(connectionString));
+      
 
 // Register repositories
 services.AddScoped<IConsultationRepository, ConsultationRepository>();
@@ -61,8 +64,8 @@ Console.WriteLine("Seeding database...");
 var seeder = new TestDataGenerator(context);
 seeder.GenerateConsultationTypes();
 seeder.GenerateDoctors(100);
-seeder.GeneratePatients(100);
-seeder.GenerateConsultations(200);
+seeder.GeneratePatients(500);
+seeder.GenerateConsultations(10000);
 Console.WriteLine("Test data generation completed!");
 
 Console.WriteLine("Database has been seeded.");
@@ -84,3 +87,21 @@ var request = new BookConsultationRequest
 
 var response = await bookingUseCase.ExecuteAsync(request);
 Console.WriteLine(response.Message);
+
+Console.WriteLine("Performance testing...");
+var performanceTester = new PerformanceTester(context);
+performanceTester.TestLazyLoadingNPlus1();
+performanceTester.TestEagerLoading();
+performanceTester.TestExplicitLoading(); 
+performanceTester.TestRawSql();
+
+Console.WriteLine("Bit of complex queries..."); 
+var overlapping = context.Consultations
+    .Where(a1 => context.Consultations
+        .Where(a2 => a1.Id != a2.Id)
+        .Any(a2 => a2.DoctorId == a1.DoctorId &&
+                   a2.TimeSlot.StartTime < a1.TimeSlot.EndTime &&
+                   a2.TimeSlot.EndTime > a1.TimeSlot.StartTime))
+    .ToList();
+
+Console.WriteLine($"Found {overlapping.Count} overlapping consultations.");

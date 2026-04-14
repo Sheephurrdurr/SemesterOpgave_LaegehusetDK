@@ -13,6 +13,7 @@ namespace Infrastructure.Configs
             builder.Property(x => x.Id).ValueGeneratedNever();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Cpr).IsRequired().HasMaxLength(10);
+            builder.HasIndex(p => p.Cpr).IsUnique();
         }
     }
 }
