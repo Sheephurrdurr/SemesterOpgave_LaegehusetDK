@@ -1,13 +1,11 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UseCases.Interfaces;
 using Facade.DTOs;
+using Facade.Interfaces;
 
 namespace UseCases.BookConsultation
 {
-    public class BookConsultationUseCase
+    public class BookConsultationUseCase : IBookConsultationUseCase
     {
         private readonly IPatientRepository _patientRepository;
         private readonly IDoctorRepository _doctorRepository;

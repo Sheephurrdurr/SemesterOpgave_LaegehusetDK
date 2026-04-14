@@ -7,8 +7,8 @@ namespace UseCases.Interfaces
 {
     public interface IPatientRepository
     {
-        public Task<Patient?> GetByIdAsync(Guid id);
+        Task<Patient?> GetByIdAsync(Guid id);
 
-        public Task AddAsync(Patient patient);
+        Task AddAsync(Patient patient);
     }
 }

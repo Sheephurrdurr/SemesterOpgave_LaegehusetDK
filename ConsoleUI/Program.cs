@@ -10,6 +10,7 @@ using UseCases.CancelConsultation;
 using UseCases.ChangeConsultationType;
 using UseCases.CompleteConsultation;
 using UseCases.MarkArrived;
+using Facade.DTOs;
 
 // Configure appconfig connectionstring, so that we can use it to connect to the database.
 // This is done by reading the appsettings.json file, which is located in the root of the project.

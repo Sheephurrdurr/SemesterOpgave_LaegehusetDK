@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UseCases.Interfaces;
+﻿using UseCases.Interfaces;
 using Facade.DTOs;
+using Facade.Interfaces;
 
 namespace UseCases.CompleteConsultation
 {
-    public class CompleteConsultationUseCase
+    public class CompleteConsultationUseCase : ICompleteConsultationUseCase
     {
         private readonly IConsultationRepository _consultationRepository;
         private readonly IUnitOfWork _unitOfWork;

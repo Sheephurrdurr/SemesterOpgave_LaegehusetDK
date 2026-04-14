@@ -1,15 +1,11 @@
-﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UseCases.BookConsultation;
-using Facade.DTOs;
+﻿using Facade.DTOs;
 using UseCases.Interfaces;
+using Facade.Interfaces;
 
 namespace UseCases.CancelConsultation
 {
 
-    public class CancelConsultationUseCase
+    public class CancelConsultationUseCase : ICancelConsultationUseCase
     {
         private readonly IConsultationRepository _consultationRepository;
         private readonly IUnitOfWork _unitOfWork;

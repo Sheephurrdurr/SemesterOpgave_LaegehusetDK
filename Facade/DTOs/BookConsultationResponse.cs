@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UseCases.BookConsultation
+namespace Facade.DTOs
 {
     public class BookConsultationResponse
     {
         public Guid ConsultationId { get; set; }
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }

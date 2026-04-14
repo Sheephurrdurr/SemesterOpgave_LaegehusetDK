@@ -5,13 +5,12 @@ namespace UseCases.Interfaces
 {
     public interface IConsultationRepository
     {
-        public Task<Consultation?> GetByIdAsync(Guid id);
+        Task<Consultation?> GetByIdAsync(Guid id);
 
-        public Task<IEnumerable<Consultation>> GetByPatientIdAsync(Guid patientId);
+        Task<IEnumerable<Consultation>> GetByPatientIdAsync(Guid patientId);
 
-        public Task<IEnumerable<Consultation>> GetByDoctorIdAsync(Guid doctorId);
+        Task<IEnumerable<Consultation>> GetByDoctorIdAsync(Guid doctorId);
 
-        public Task AddAsync(Consultation consultation);
-
+        Task AddAsync(Consultation consultation);
     }
 }

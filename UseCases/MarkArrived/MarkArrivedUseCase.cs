@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Facade.DTOs;
+﻿using Facade.DTOs;
 using UseCases.Interfaces;
+using Facade.Interfaces;
 
 namespace UseCases.MarkArrived
 {
-    public class MarkArrivedUseCase
+    public class MarkArrivedUseCase : IMarkArrivedUseCase
     {
         private readonly IConsultationRepository _consultationRepository;
         private readonly IUnitOfWork _unitOfWork;

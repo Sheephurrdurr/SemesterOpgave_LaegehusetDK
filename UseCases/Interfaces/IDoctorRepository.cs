@@ -4,8 +4,8 @@ namespace UseCases.Interfaces
 {
     public interface IDoctorRepository
     {
-        public Task<Doctor?> GetByIdAsync(Guid id);
+        Task<Doctor?> GetByIdAsync(Guid id);
 
-        public Task AddAsync(Doctor doctor);
+        Task AddAsync(Doctor doctor);
     }
 }
