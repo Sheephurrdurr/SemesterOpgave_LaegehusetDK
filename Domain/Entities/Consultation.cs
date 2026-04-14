@@ -30,7 +30,7 @@ namespace Domain.Entities
 
         protected Consultation() { }
 
-        public void ChangeConsultationType(Guid consultationId, Guid newConsultationTypeId)
+        public void ChangeConsultationType(Guid newConsultationTypeId)
         {
             ConsultationTypeId = newConsultationTypeId;
         }

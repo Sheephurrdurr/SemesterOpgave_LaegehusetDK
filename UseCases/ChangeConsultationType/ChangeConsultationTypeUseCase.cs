@@ -31,7 +31,7 @@ namespace UseCases.ChangeConsultationType
             if (newConsultationType is null) 
                 throw new ArgumentException("Consultation Type not found");
 
-            consultation.ChangeConsultationType(request.ConsultationId, request.ConsultationTypeId);
+            consultation.ChangeConsultationType(request.ConsultationTypeId);
 
             await _unitOfWork.SaveChangesAsync();
         }
