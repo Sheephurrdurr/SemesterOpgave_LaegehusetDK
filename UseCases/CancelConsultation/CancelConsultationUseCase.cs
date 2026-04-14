@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UseCases.BookConsultation;
-using UseCases.CancelConsultationUseCase;
+using Facade.DTOs;
 using UseCases.Interfaces;
 
 namespace UseCases.CancelConsultation

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UseCases.Interfaces;
+using Facade.DTOs;
 
 namespace UseCases.BookConsultation
 {

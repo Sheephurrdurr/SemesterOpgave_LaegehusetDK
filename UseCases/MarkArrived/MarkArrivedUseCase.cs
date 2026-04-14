@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UseCases.CancelConsultationUseCase;
+using Facade.DTOs;
 using UseCases.Interfaces;
 
 namespace UseCases.MarkArrived

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UseCases.CompleteConsultation;
+using Facade.DTOs;
 using UseCases.Interfaces;
 
 namespace UseCases.ChangeConsultationType

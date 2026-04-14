@@ -10,4 +10,3 @@ namespace Facade.DTOs
         public string? Note { get; set; } // Optional note to be added when completing the consultation.
     }
 }
-}

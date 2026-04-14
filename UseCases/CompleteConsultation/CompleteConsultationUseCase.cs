@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UseCases.Interfaces;
-using UseCases.MarkArrived;
+using Facade.DTOs;
 
 namespace UseCases.CompleteConsultation
 {
