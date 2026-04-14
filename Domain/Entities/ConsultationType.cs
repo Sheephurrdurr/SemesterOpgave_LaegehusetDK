@@ -1,6 +1,5 @@
 ﻿namespace Domain.Entities
 {
-    // 
     public abstract class ConsultationType
     {
         public Guid Id { get; private set; }

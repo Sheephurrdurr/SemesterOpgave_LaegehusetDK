@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases.Interfaces;
 using UseCases.BookConsultation;
+using UseCases.CancelConsultation;
+using UseCases.ChangeConsultationType;
+using UseCases.CompleteConsultation;
+using UseCases.MarkArrived;
 
 // Configure appconfig connectionstring, so that we can use it to connect to the database.
 // This is done by reading the appsettings.json file, which is located in the root of the project.
@@ -34,6 +38,10 @@ services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
 
 // Register use cases
 services.AddScoped<BookConsultationUseCase>();
+services.AddScoped<CancelConsultationUseCase>();
+services.AddScoped<ChangeConsultationTypeUseCase>();
+services.AddScoped<CompleteConsultationUseCase>();
+services.AddScoped<MarkArrivedUseCase>();
 
 // Register UnitOfWork, which is responsible for saving changes to the database.
 // This is used in the use cases to ensure that all changes are saved in a single transaction.

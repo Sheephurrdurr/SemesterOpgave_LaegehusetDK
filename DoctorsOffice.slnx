@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="Domain/Domain.csproj" />
+    <Project Path="Facade/Facade.csproj" Id="a2f1bdc3-f902-4355-b540-2852072412fb" />
     <Project Path="Infrastructure/Infrastructure.csproj" />
     <Project Path="UseCases/UseCases.csproj" Id="ad5a8c04-4bec-4f8e-b7df-4cb61540b7a3" />
   </Folder>
