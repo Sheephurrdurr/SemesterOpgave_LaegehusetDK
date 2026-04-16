@@ -3,6 +3,9 @@ using Infrastructure;
 
 namespace ConsoleUI
 {
+    // Test data generation script for populating the database with dummy data for testing and performance measurement purposes.
+    // Seeding is done from Program.cs, but the actual logic is encapsulated in this class for that sweet separation of concerns.
+    // Everything is fairly straight forward here, I should be able to pick this up. You hear that, me? You've fallen off, if you cant read this code.
     public class TestDataGenerator
     {
         private readonly DoctorsOfficeContext _context;

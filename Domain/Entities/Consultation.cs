@@ -6,7 +6,8 @@ namespace Domain.Entities
     public class Consultation
     {
         public Guid Id { get; private set; }
-        public Guid ConsultationTypeId { get; private set; }
+        public Guid ConsultationTypeId { get; private set; } // No navigation properties, because we're keeping our aggregate roots clean.
+                                                             // If we need to access the related entities, we can do that in the application layer with the repositories.
         public Guid DoctorId { get; private set; }
         public Guid PatientId { get; private set; }
         public Status Status { get; private set; }
