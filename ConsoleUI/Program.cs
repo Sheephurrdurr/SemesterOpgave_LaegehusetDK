@@ -95,13 +95,22 @@ performanceTester.TestEagerLoading();
 performanceTester.TestExplicitLoading(); 
 performanceTester.TestRawSql();
 
-Console.WriteLine("Bit of complex queries..."); 
-var overlapping = context.Consultations
-    .Where(a1 => context.Consultations
-        .Where(a2 => a1.Id != a2.Id)
-        .Any(a2 => a2.DoctorId == a1.DoctorId &&
-                   a2.TimeSlot.StartTime < a1.TimeSlot.EndTime &&
-                   a2.TimeSlot.EndTime > a1.TimeSlot.StartTime))
+Console.WriteLine("Bit of complex queries...");
+
+var consultationsWithDuration = context.Consultations
+    .Join(context.ConsultationTypes,
+    c => c.ConsultationTypeId,
+    ct => ct.Id,
+    (c, ct) => new { Consultation = c, Duration = ct.Duration })
+    .ToList();
+
+var overlapping = consultationsWithDuration
+    .Where(a1 => consultationsWithDuration
+        .Any(a2 =>
+            a2.Consultation.Id != a1.Consultation.Id &&
+            a2.Consultation.DoctorId == a1.Consultation.DoctorId &&
+            a2.Consultation.TimeSlot.StartTime < a1.Consultation.TimeSlot.StartTime.Add(a1.Duration + TimeSpan.FromMinutes(5)) &&
+            a2.Consultation.TimeSlot.StartTime.Add(a2.Duration + TimeSpan.FromMinutes(5)) > a1.Consultation.TimeSlot.StartTime))
     .ToList();
 
 Console.WriteLine($"Found {overlapping.Count} overlapping consultations.");

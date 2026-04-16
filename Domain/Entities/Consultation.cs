@@ -10,7 +10,10 @@ namespace Domain.Entities
         public Guid DoctorId { get; private set; }
         public Guid PatientId { get; private set; }
         public Status Status { get; private set; }
-        public TimeSlot TimeSlot {  get; private set; }
+        // TimeSlot and database indexing note:
+        // TimeSlot was supposed to be indexed, but due to EF Core being a little iffy with complex properties, I've decided not to.
+        // The issue could be solved with some raw sql migrations, or by going directly into SSMS and creating the index there.
+        public TimeSlot TimeSlot { get; private set; }
         public string? Note { get; private set; }
 
         public Consultation(
