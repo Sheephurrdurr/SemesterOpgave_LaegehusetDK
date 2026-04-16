@@ -28,8 +28,8 @@ namespace ConsoleUI
         }
 
         // NOTE: Lazy Loading is not enabled by default in EF Core.
-        // Without LazyLoadingProxies, this test does not generate N+1 queries.
-        // In a real N+1 scenario with 100 doctors, EF would generate 101 queries:
+        // Without LazyLoadingProxies, test does not generate N+1 queries.
+        // In a 'real' N+1 scenario with 100 doctors, EF would generate 101 queries.
         // 1 query for doctors + 1 query per doctor for their consultations.
         // This is why Eager Loading with Include() is preferred.
         public void TestLazyLoadingNPlus1()
@@ -46,7 +46,7 @@ namespace ConsoleUI
             }
 
             sw.Stop();
-            Console.WriteLine($"Lazy loading (N+1) took {sw.ElapsedMilliseconds} ms | doctors: {doctors.Count} | consultations: {doctors.Sum(d => d.Consultations.Count)}");
+            //Console.WriteLine($"Lazy loading (N+1) took {sw.ElapsedMilliseconds} ms | doctors: {doctors.Count} | consultations: {doctors.Sum(d => d.Consultations.Count)}");
         }
 
         // Explicit loading allows you to load related data on demand, but it can lead to a whole lot of queries, if not used carefully.

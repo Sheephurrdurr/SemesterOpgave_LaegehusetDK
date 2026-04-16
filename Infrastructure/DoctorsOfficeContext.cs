@@ -28,7 +28,7 @@ namespace Infrastructure
             /* 
              * Seeding happens in Program.cs with EnsureCreated().
              * HasData() only works with migrations, but with EnsureCreated() seeding has to be done manually after creating the db
-             * --Uncomment if project switches to use migrations only--
+             * --Uncomment if I switch the project to use migrations only--
              *
             modelBuilder.Entity<RegularConsultation>().HasData(
                  new RegularConsultation(new Guid("4ADF9313-E990-4BFC-B186-A886179DA195"))

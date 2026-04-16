@@ -22,7 +22,8 @@ namespace Infrastructure.Configs
             });
 
             //builder.HasIndex("StartTime"); // Indexing the TimeSlot for faster queries when searching for consultations by time.
-                                           // Basically, indexing is just making the database look up the value in a sorted list (the index) instead of scanning through all the records.
+                                            // Basically, indexing is just making the database look up the value in a sorted list (the index) instead of scanning through all the records.
+                                           // but we aint doing that, because indexing complex properties in EF core aint easy, son
         }
     }
 }
