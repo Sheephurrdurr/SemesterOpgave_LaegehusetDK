@@ -170,22 +170,31 @@ foreach(var slot in availableTimeSlots)
     Console.WriteLine($"Available slot: {slot.From:HH:mm} - {slot.To:HH:mm}");
 }
 
-// Query finds "todays overview"
-var todaysOverview = context.Consultations
-    .Where(c => c.TimeSlot.StartTime.Date == DateTime.Now.Date) // Get all consultations for today
-    .Join(context.ConsultationTypes,
-        c => c.ConsultationTypeId,
-        ct => ct.Id
-        (c, ct) => new { Consultation = c, ConsultationType = ct })
+    // Query finds "todays overview"
+    var todaysOverview = context.Consultations
+        .Where(c => c.TimeSlot.StartTime.Date == DateTime.Now.AddDays(1).Date
+        && c.DoctorId == doctorId) // Get all consultations for today
+        .Join(context.ConsultationTypes,
+            c => c.ConsultationTypeId,
+            cType => cType.Id,
+            (c, ct) => new { Consultation = c, ConsultationType = ct })
 
-    .Join(context.Doctors,
-        x => x.Consultation.DoctorId,
-        d => d.Id,
-        (x, d) => new { x.Consultation, x.ConsultationType, Doctor = d })
+        .Join(context.Doctors,
+            x => x.Consultation.DoctorId,
+            d => d.Id,
+            (x, d) => new { x.Consultation, x.ConsultationType, Doctor = d })
 
-    .Join(context.Patients,
-        x => x.Consultation.PatientId,
-        p => p.Id,
-        (x, p) => new { x.Consultation, x.ConsultationType, x.Doctor, Patient = p })
-    .OrderBy(x => x.Consultation.Timeslot.StartTime)
-    .ToList();
+        .Join(context.Patients,
+            x => x.Consultation.PatientId,
+            p => p.Id,
+            (x, p) => new { x.Consultation, x.ConsultationType, x.Doctor, Patient = p })
+        .OrderBy(x => x.Consultation.TimeSlot.StartTime)
+        .ToList();
+
+    Console.WriteLine("Today's Overview:");
+    foreach(var item in todaysOverview)
+    {
+
+        Console.WriteLine($"{item.Consultation.TimeSlot.StartTime:HH:mm} - {item.Consultation.TimeSlot.EndTime:HH:mm}");
+        Console.WriteLine($"{item.ConsultationType.Name} med {item.Patient.Name}. Læge: {item.Doctor.Name}\n");
+    }
