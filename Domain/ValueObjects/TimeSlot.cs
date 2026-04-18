@@ -9,7 +9,7 @@ namespace Domain.ValueObjects
 
         public TimeSlot(DateTime startTime, DateTime endTime)
         {
-            if (startTime < DateTime.Now)
+            if (startTime < DateTime.Today)
                 throw new ArgumentException("Start time cannot be in the past.");
 
             if (endTime <= startTime)

@@ -1,0 +1,50 @@
+﻿@page "/"
+@using Facade.Interfaces;
+@using Facade.DTOs;
+@inject IConsultationQueries ConsultationQueries
+
+<PageTitle>Dagens Overblik</PageTitle>
+
+<h1>Dagens Overblik</h1>
+
+@if (todaysConsultations == null)
+{
+    <p>Henter konsultationer...</p>
+}
+else if (!todaysConsultations.Any())
+{
+    <p>Ingen konsultationer i dag.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Tidspunkt</th>
+                <th>Patient</th>
+                <th>Læge</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consultation in todaysConsultations)
+            {
+                <tr>
+                    <td>@consultation.StartTime.ToString("HH:mm") - @consultation.EndTime.ToString("HH:mm")</td>
+                    <td>@consultation.PatientName</td>
+                    <td>@consultation.DoctorName</td>
+                    <td>@consultation.ConsultationTypeName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<ConsultationDto> todaysConsultations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todaysConsultations = await ConsultationQueries.GetTodaysConsultationsAsync();
+    }
+}

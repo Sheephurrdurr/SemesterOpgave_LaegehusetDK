@@ -78,7 +78,7 @@ namespace ConsoleUI
                     consultationTypes[_random.Next(consultationTypes.Count)],
                     doctors[_random.Next(doctors.Count)],
                     patients[_random.Next(patients.Count)],
-                    DateTime.Now.AddDays(_random.Next(1,30)).Date.AddHours(_random.Next(8,15))
+                    DateTime.Today.AddDays(_random.Next(1,30)).Date.AddHours(_random.Next(8,15))
                 );
 
                 if (i % (count / 10) == 0)

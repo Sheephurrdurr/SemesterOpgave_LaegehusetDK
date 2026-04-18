@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Facade.DTOs
 {
-    public class BookConsultationResponse
+    public record BookConsultationResponse
     {
         public Guid ConsultationId { get; set; }
         public string? Message { get; set; }

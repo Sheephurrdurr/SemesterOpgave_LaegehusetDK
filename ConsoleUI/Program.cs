@@ -13,7 +13,7 @@ using UseCases.ChangeConsultationType;
 using UseCases.CompleteConsultation;
 using UseCases.MarkArrived;
 using Facade.DTOs;
-using System.Security.Cryptography.X509Certificates;
+
 
 // Configure appconfig connectionstring, so that we can use it to connect to the database.
 // This is done by reading the appsettings.json file, which is located in the root of the project.
@@ -57,16 +57,19 @@ var serviceProvider = services.BuildServiceProvider();
 var context = serviceProvider.GetRequiredService<DoctorsOfficeContext>();
 
 Console.WriteLine("Creating database...");
-context.Database.EnsureDeleted();
+//context.Database.EnsureDeleted(); RE ENABLE THIS WHEN IM DONE WITH SETTING UP UI
 context.Database.EnsureCreated();
 Console.WriteLine("Database created succesfully!");
 
 Console.WriteLine("Seeding database...");
-var seeder = new TestDataGenerator(context);
-seeder.GenerateConsultationTypes();
-seeder.GenerateDoctors(100);
-seeder.GeneratePatients(500);
-seeder.GenerateConsultations(10000);
+if(!context.Doctors.Any() || !context.Patients.Any() || !context.ConsultationTypes.Any() || !context.Consultations.Any())
+{
+    var seeder = new TestDataGenerator(context);
+    seeder.GenerateConsultationTypes();
+    seeder.GenerateDoctors(100);
+    seeder.GeneratePatients(500);
+    seeder.GenerateConsultations(10000);
+}
 Console.WriteLine("Test data generation completed!");
 
 Console.WriteLine("Database has been seeded.");

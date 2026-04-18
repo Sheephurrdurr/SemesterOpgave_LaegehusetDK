@@ -8,5 +8,6 @@
   <Folder Name="/tests/">
     <Project Path="DoctorsOfficeTests/DoctorsOfficeTests.csproj" />
   </Folder>
+  <Project Path="BlazorUI/BlazorUI.csproj" Id="311e7654-b497-4256-be1f-2534f0935e75" />
   <Project Path="ConsoleUI/ConsoleUI.csproj" />
 </Solution>

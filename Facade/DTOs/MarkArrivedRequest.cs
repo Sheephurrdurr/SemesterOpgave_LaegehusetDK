@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Facade.DTOs
 {
-    public class MarkArrivedRequest
+    public record MarkArrivedRequest
     {
         public Guid Id { get; set; }
     }
