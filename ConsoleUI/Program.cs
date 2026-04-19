@@ -1,6 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore.Proxies;
-using ConsoleUI;
+﻿using ConsoleUI;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -197,7 +195,6 @@ foreach(var slot in availableTimeSlots)
     Console.WriteLine("Today's Overview:");
     foreach(var item in todaysOverview)
     {
-
         Console.WriteLine($"{item.Consultation.TimeSlot.StartTime:HH:mm} - {item.Consultation.TimeSlot.EndTime:HH:mm}");
         Console.WriteLine($"{item.ConsultationType.Name} med {item.Patient.Name}. Læge: {item.Doctor.Name}\n");
     }

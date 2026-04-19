@@ -26,6 +26,11 @@ namespace Domain.ValueObjects
             return StartTime < other.EndTime && EndTime > other.StartTime;
         }
 
+        public bool OverlapsWith(DateTime startTime, DateTime endTime)
+        {
+            return StartTime < endTime && EndTime > startTime;
+        }
+
         public override string ToString()
         {
             return $"{StartTime} - {EndTime}";
