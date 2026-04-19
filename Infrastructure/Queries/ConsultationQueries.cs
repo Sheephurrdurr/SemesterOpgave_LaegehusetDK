@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Facade.Interfaces;
+﻿using Facade.Interfaces;
 using Facade.DTOs;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +11,30 @@ namespace Infrastructure.Queries
         public ConsultationQueries(DoctorsOfficeContext context) 
         {
             _context = context;
+        }
+
+        public async Task<IReadOnlyList<ConsultationTypeDto>> GetAllConsultationTypesAsync()
+        {
+            var consultationTypes = await _context.ConsultationTypes
+                .Select(ct => new ConsultationTypeDto(ct.Id, ct.Name, ct.Duration))
+                .ToListAsync();
+            return consultationTypes;
+        }
+
+        public async Task<IReadOnlyList<DoctorDto>> GetAllDoctorsAsync()
+        {
+            var doctors = await _context.Doctors
+                .Select(d => new DoctorDto(d.Id, d.Name))
+                .ToListAsync();
+            return doctors;
+        }
+
+        public async Task<IReadOnlyList<PatientDto>> GetAllPatientsAsync()
+        {
+            var patients = await _context.Patients
+                .Select(p => new PatientDto(p.Id, p.Name))
+                .ToListAsync();
+            return patients;
         }
 
         public async Task<IReadOnlyList<ConsultationDto>> GetTodaysConsultationsAsync()

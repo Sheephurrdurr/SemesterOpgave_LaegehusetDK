@@ -1,0 +1,109 @@
+﻿@page "/create-consultation"
+@rendermode InteractiveServer // Hvis metoder ikke bliver kaldt som de skal, så tilføj denne linje under @page. 
+@using Facade.Interfaces
+@using Facade.DTOs
+@inject IConsultationQueries ConsultationQueries
+@inject IBookConsultationUseCase BookingUseCase
+
+<div class="container mt-4">
+    <h1 class="mb-4">Opret Konsultation</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Læge</label>
+                <select class="form-select" @bind="selectedDoctorId">
+                    <option value="">Vælg læge...</option>
+                    @foreach (var doctor in doctors)
+                    {
+                        <option value="@doctor.Id">@doctor.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Patient</label>
+                <select class="form-select" @bind="selectedPatientId">
+                    <option value="">Vælg patient...</option>
+                    @foreach (var patient in patients)
+                    {
+                        <option value="@patient.Id">@patient.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Konsultationstype</label>
+                <select class="form-select" @bind="selectedConsultationTypeId">
+                    <option value="">Vælg type...</option>
+                    @foreach (var type in consultationTypes)
+                    {
+                        <option value="@type.Id">@type.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Starttidspunkt</label>
+                <input type="datetime-local" class="form-control" @bind="startTime" />
+            </div>
+
+            <button type="button" class="btn btn-primary" @onclick="BookConsultation">Opret Konsultation</button>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @(message.StartsWith("Fejl") ? "alert-danger" : "alert-success") mt-3">
+                    @message
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IReadOnlyList<DoctorDto> doctors = new List<DoctorDto>();
+    private IReadOnlyList<PatientDto> patients = new List<PatientDto>();
+    private IReadOnlyList<ConsultationTypeDto> consultationTypes = new List<ConsultationTypeDto>();
+
+    private Guid selectedDoctorId;
+    private Guid selectedPatientId;
+    private Guid selectedConsultationTypeId;
+    private DateTime startTime = DateTime.Now.AddDays(1);
+    private string message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        doctors = await ConsultationQueries.GetAllDoctorsAsync();
+        patients = await ConsultationQueries.GetAllPatientsAsync();
+        consultationTypes = await ConsultationQueries.GetAllConsultationTypesAsync();
+    }
+
+    private async Task BookConsultation() // Outer most layer of the book consultation machine. 
+    // method calls UseCase
+    // Which uses the infrastructure layer to go to the database, where it uses the domain entities and business logic
+    {
+        try
+        {
+            var request = new BookConsultationRequest
+            {
+                DoctorId = selectedDoctorId,
+                PatientId = selectedPatientId,
+                ConsultationTypeId = selectedConsultationTypeId,
+                StartTime = startTime
+            };
+
+            var response = await BookingUseCase.ExecuteAsync(request);
+            message = response.Message;
+
+            selectedDoctorId = Guid.Empty;
+			selectedPatientId = Guid.Empty;
+			selectedConsultationTypeId = Guid.Empty;
+			startTime = DateTime.Today;
+        }
+        catch (Exception ex)
+        {
+            message = $"Fejl: {ex.Message}";
+        }
+  
+    }
+}

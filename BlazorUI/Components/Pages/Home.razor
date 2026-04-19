@@ -5,40 +5,43 @@
 
 <PageTitle>Dagens Overblik</PageTitle>
 
-<h1>Dagens Overblik</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Dagens Overblik</h1>
+    <h3 class="mb-4">Konsultationer I Dag</h3>
 
-@if (todaysConsultations == null)
-{
-    <p>Henter konsultationer...</p>
-}
-else if (!todaysConsultations.Any())
-{
-    <p>Ingen konsultationer i dag.</p>
-}
-else
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Tidspunkt</th>
-                <th>Patient</th>
-                <th>Læge</th>
-                <th>Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var consultation in todaysConsultations)
-            {
+    @if (todaysConsultations == null)
+    {
+        <div class="spinner-border" role="status"></div>
+    }
+    else if (!todaysConsultations.Any())
+    {
+        <div class="alert alert-info">Ingen konsultationer i dag.</div>
+    }
+    else
+    {
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td>@consultation.StartTime.ToString("HH:mm") - @consultation.EndTime.ToString("HH:mm")</td>
-                    <td>@consultation.PatientName</td>
-                    <td>@consultation.DoctorName</td>
-                    <td>@consultation.ConsultationTypeName</td>
+                    <th>Tidspunkt</th>
+                    <th>Patient</th>
+                    <th>Læge</th>
+                    <th>Type</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var consultation in todaysConsultations)
+                {
+                    <tr>
+                        <td>@consultation.StartTime.ToString("HH:mm") - @consultation.EndTime.ToString("HH:mm")</td>
+                        <td>@consultation.PatientName</td>
+                        <td>@consultation.DoctorName</td>
+                        <td>@consultation.ConsultationTypeName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     private IReadOnlyList<ConsultationDto> todaysConsultations;

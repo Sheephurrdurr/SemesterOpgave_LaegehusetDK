@@ -1,0 +1,66 @@
+﻿@page "/cancel-consultation"
+@rendermode InteractiveServer
+@using Facade.Interfaces
+@using Facade.DTOs
+@using UseCases.CancelConsultation
+@inject IConsultationQueries ConsultationQueries
+@inject ICancelConsultationUseCase CancelConsultationUseCase
+
+<div class="container mt-4">
+    <h1 class="mb-4">Afmeld Konsultation</h1>
+
+    <div class="row d-flex">
+        <div class="col-md-8 ">
+            <div class="mb-3">
+                <label class="form-label">Vælg konsultation for at afmelde</label>
+                <select class="form-select" @bind="selectedConsultationId">
+                    <option value="">Vælg konsultation...</option>
+                    @foreach (var consultation in todaysConsultations)
+                    {
+                        <option value="@consultation.Id">@consultation.StartTime.ToString("HH:mm") - @consultation.PatientName (@consultation.DoctorName)</option>
+                    }
+                </select>
+            </div>
+
+            <button type="button" class="btn btn-primary" @onclick="Cancel">Afmeld Konsultation</button>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @(message.StartsWith("Fejl") ? "alert-danger" : "alert-success") mt-3">
+                    @message
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IReadOnlyList<ConsultationDto> todaysConsultations = new List<ConsultationDto>();
+    private Guid selectedConsultationId;
+    private string note = "";
+    private string message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        todaysConsultations = await ConsultationQueries.GetTodaysConsultationsAsync();
+    }
+
+    private async Task Cancel()
+    {
+        try
+        {
+            var request = new CancelConsultationRequest
+            {
+                Id = selectedConsultationId
+            };
+
+            await CancelConsultationUseCase.ExecuteAsync(request);
+            message = "Konsultation afmeldt!";
+            note = "";
+        }
+        catch (Exception ex)
+        {
+            message = $"Fejl: {ex.Message}";
+        }
+    }
+}

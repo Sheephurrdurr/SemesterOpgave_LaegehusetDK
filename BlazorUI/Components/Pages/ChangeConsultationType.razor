@@ -1,0 +1,82 @@
+﻿@page "/change-consultation-type"
+@rendermode InteractiveServer
+@using Facade.Interfaces
+@using Facade.DTOs
+@using UseCases.ChangeConsultationType
+@inject IConsultationQueries ConsultationQueries
+@inject IChangeConsultationTypeUseCase ChangeConsultationTypeUseCase
+
+<div class="container mt-4">
+    <h1 class="mb-4">Ændr Konsultationstype</h1>
+
+    <div class="row d-flex">
+        <div class="col-md-8 ">
+
+            <div class="mb-3">
+                <label class="form-label">Vælg konsultation for at ændre type</label>
+                <select class="form-select" @bind="selectedConsultationId">
+                    <option value="">Vælg konsultation...</option>
+                    @foreach (var consultation in todaysConsultations)
+                    {
+                        <option value="@consultation.Id">@consultation.StartTime.ToString("HH:mm") - @consultation.PatientName (@consultation.DoctorName) [@consultation.ConsultationTypeName]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Vælg ny konsultationstype</label>
+                <select class="form-select" @bind="selectedConsultationTypeId">
+                    <option value="">Vælg ny konsultationstype...</option>
+                    @foreach (var consultationType in consultationTypes)
+                    {
+                        <option value="@consultationType.Id">@consultationType.Name</option>
+                    }
+                </select>
+            </div>
+
+            <button type="button" class="btn btn-primary" @onclick="ChangeType">Ændr Konsultations Type</button>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @(message.StartsWith("Fejl") ? "alert-danger" : "alert-success") mt-3">
+                    @message
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IReadOnlyList<ConsultationDto> todaysConsultations = new List<ConsultationDto>();
+    private IReadOnlyList<ConsultationTypeDto> consultationTypes = new  List<ConsultationTypeDto>();
+    private Guid selectedConsultationTypeId;
+    private Guid selectedConsultationId;
+    private string note = "";
+    private string message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+		consultationTypes = await ConsultationQueries.GetAllConsultationTypesAsync();
+        todaysConsultations = await ConsultationQueries.GetTodaysConsultationsAsync();
+    }
+
+    private async Task ChangeType()
+    {
+        try
+        {
+            var request = new ChangeConsultationTypeRequest
+            {
+                ConsultationId = selectedConsultationId,
+                ConsultationTypeId = selectedConsultationTypeId
+            };
+
+            await ChangeConsultationTypeUseCase.ExecuteAsync(request);
+            message = "Konsultationstype ændret!";
+            note = "";
+        }
+        catch (Exception ex)
+        {
+            message = $"Fejl: {ex.Message}";
+        }
+    }
+}

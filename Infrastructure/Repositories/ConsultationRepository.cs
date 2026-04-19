@@ -32,6 +32,13 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Consultation>> GetByDoctorIdAndDateAsync(Guid doctorId, DateTime date)
+        {
+            return await _context.Consultations
+                .Where(c => c.DoctorId == doctorId && c.TimeSlot.StartTime.Date == date.Date)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Consultation consultation)
         {
             await _context.Consultations.AddAsync(consultation);

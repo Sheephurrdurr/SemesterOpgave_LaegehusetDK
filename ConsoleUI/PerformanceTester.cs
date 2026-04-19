@@ -70,8 +70,10 @@ namespace ConsoleUI
             Console.WriteLine($"Explicit Loading took {satudarahWatch.ElapsedMilliseconds} ms | doctors: {doctors.Count} | consultations: {doctors.Sum(d => d.Consultations.Count)}");
         }
 
-        // Raw SQL queries can be used for complex queries or stuff where performance is very important, but they bypass EF's change tracking (it keeps track of what it's been doing) and other features.
-        // but sometimes EF Core sucks at generating efficient SQL for certain queries, and raw SQL can be a way to optimize performance in those cases.
+        // Raw SQL queries can be used for complex queries or stuff where performance is very important,
+        // but they bypass EF's change tracking (it keeps track of what it's been doing) and other features.
+        // but sometimes EF Core sucks at generating efficient SQL for certain queries,
+        // and raw SQL can be a way to optimize performance in those cases.
         public void TestRawSql()
         {
             var sw = new Stopwatch();

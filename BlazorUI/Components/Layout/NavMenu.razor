@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorUI</a>
+        <a class="navbar-brand" href="">Lægehuset-DK</a>
     </div>
 </div>
 
@@ -10,19 +10,37 @@
     <nav class="nav flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span><i class="bi bi-calendar-day"></i></span> Dagens Overblik
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="create-consultation">
+                <span><i class="bi bi-plus-circle"></i></span> Opret Konsultation
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="complete-consultation">
+                <span><i class="bi bi-check-circle"></i></span> Afslut Konsultation
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="mark-arrived-consultation">
+                <span><i class="bi bi-reply"></i></span> Marker Ankommet
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="cancel-consultation">
+                <span><i class="bi bi-x-lg"></i></span> Afmeld Konsultation
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="change-consultation-type">
+				<span><i class="bi bi-x-lg"></i></span> Ændr Konsultationstype
             </NavLink>
         </div>
     </nav>

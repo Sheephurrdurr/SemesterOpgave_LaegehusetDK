@@ -17,9 +17,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddDbContext<DoctorsOfficeContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection String: 'DefaultConnection' not found.")));
 
-// Register repositories and services
+//Transient creates a new instance every time the service is requesteed. Used for lightweight, stateless services.
+
+// Scoped services are created once per client request (like connections).
+// This is ideal for services that need to maintain state within a single request, such as repositories that interact with the database context.
+
+// Singleton services are created the first time they are requested and then shared across all the following requests.
+// This is best for services that maintain global state or are expensive to create, but should be used with caution in web applications to avoid unintended side effects.
+
+// Register repositories
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IConsultationTypeRepository, ConsultationTypeRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
@@ -32,12 +40,11 @@ builder.Services.AddScoped<IConsultationQueries, ConsultationQueries>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Use Cases
-builder.Services.AddScoped<BookConsultationUseCase>();
-builder.Services.AddScoped<CancelConsultationUseCase>();
-builder.Services.AddScoped<ChangeConsultationTypeUseCase>();
-builder.Services.AddScoped<CompleteConsultationUseCase>();
-builder.Services.AddScoped<MarkArrivedUseCase>();
-
+builder.Services.AddScoped<IBookConsultationUseCase, BookConsultationUseCase>();
+builder.Services.AddScoped<ICancelConsultationUseCase, CancelConsultationUseCase>();
+builder.Services.AddScoped<IChangeConsultationTypeUseCase, ChangeConsultationTypeUseCase>();
+builder.Services.AddScoped<ICompleteConsultationUseCase, CompleteConsultationUseCase>();
+builder.Services.AddScoped<IMarkArrivedUseCase, MarkArrivedUseCase>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

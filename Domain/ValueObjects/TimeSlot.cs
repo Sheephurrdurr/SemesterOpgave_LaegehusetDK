@@ -15,8 +15,15 @@ namespace Domain.ValueObjects
             if (endTime <= startTime)
                 throw new ArgumentException("End time must be after start time.");
 
+           
+
             StartTime = startTime;
             EndTime = endTime;
+        }
+
+        public bool OverlapsWith(TimeSlot other)
+        {
+            return StartTime < other.EndTime && EndTime > other.StartTime;
         }
 
         public override string ToString()
